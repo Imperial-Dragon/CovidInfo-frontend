@@ -1,18 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { City } from 'src/app/models/city.model'
-import { Resource } from 'src/app/models/resource.model';
-
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { ElementRef, AfterViewInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { MdbTableDirective, MdbTablePaginationComponent } from 'ng-uikit-pro-standard';
+
+import { City } from 'src/app/models/city.model'
+import { Resource } from 'src/app/models/resource.model';
 import { HospitalData } from 'src/app/models/hospital-data.model';
 import { FetchDataService } from 'src/app/services/fetch-data.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-hospital-info',
   templateUrl: './hospital-info.component.html',
   styleUrls: ['./hospital-info.component.css']
 })
-export class HospitalInfoComponent implements OnInit, AfterViewInit {
+export class HospitalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  showLoginBox : Boolean = false;
+  authError : string = '';
 
   @ViewChild(MdbTableDirective, { static: true }) mdbTable!: MdbTableDirective;
   @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination!: MdbTablePaginationComponent;
@@ -48,8 +53,7 @@ export class HospitalInfoComponent implements OnInit, AfterViewInit {
 
   maxVisibleItems: number = 8;
 
-  constructor(private cdRef: ChangeDetectorRef, private fetchDataService : FetchDataService) {}
-
+  constructor(private cdRef: ChangeDetectorRef, private fetchDataService : FetchDataService, private authenticationService : AuthenticationService, private router: Router) {}
 
   ngOnInit() {
     this.elements = this.fetchDataService.getHospitalInfoProxy(this.selectedCity.value, this.selectedResource.value);
@@ -61,6 +65,11 @@ export class HospitalInfoComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.cdRef.detectChanges();
   }
+
+  ngOnDestroy(): void {
+    
+  }
+
 
   emitDataSourceChange() {
     this.mdbTable.dataSourceChange().subscribe((data: any) => {
@@ -84,10 +93,26 @@ export class HospitalInfoComponent implements OnInit, AfterViewInit {
 
   onTableRowClick(id: string) {
     this.selectedHospitalId = id;
-    console.log(id);
   }
 
   onScreenClick() {
     this.selectedHospitalId = '';
+  }
+
+  onLoginClicked(data : { username : string, password : string}) {
+    let loginSubscription = this.authenticationService.login(data.username, data.password).subscribe(
+      (response : any) => {
+        AuthenticationService.token = response['token'];
+        console.log('Authentication Successful !');
+        console.log(response);
+        loginSubscription.unsubscribe();
+        this.router.navigate(['/admin-dashboard']);
+      },
+      (error : any) => {
+        console.log('Authentication Failed !');
+        console.log(error);
+        loginSubscription.unsubscribe();
+      }
+    )
   }
 }
