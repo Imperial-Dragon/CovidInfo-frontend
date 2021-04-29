@@ -10,18 +10,22 @@ import { MDBBootstrapModule } from 'ng-uikit-pro-standard';
 import { InputsModule, WavesModule } from 'ng-uikit-pro-standard'
 
 import { MatSelectModule } from '@angular/material/select';
-import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { DataTableComponent } from './components/data-table/data-table.component';
 import { HospitalInfoComponent } from './pages/hospital-info/hospital-info.component';
 import { AdminComponent } from './pages/admin/admin.component';
+import { FormComponentComponent } from './components/login-form-component/login-form-component.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DataTableComponent,
     HospitalInfoComponent,
-    AdminComponent
+    AdminComponent,
+    FormComponentComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +33,10 @@ import { AdminComponent } from './pages/admin/admin.component';
     BrowserAnimationsModule,
     HttpClientModule,
     MatSelectModule,
+    MatCardModule,
+    MatButtonModule,
     FormsModule,
+    ReactiveFormsModule,
     MatInputModule,
     InputsModule,
     WavesModule,
