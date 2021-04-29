@@ -8,7 +8,7 @@
     <div class="col-sm-6 text-center">
       <mat-form-field appearance="fill" style="width: 100%;">
         <mat-label>City</mat-label>
-        <mat-select [(ngModel)]="selectedCity" name="city">
+        <mat-select [(ngModel)]="selectedCity.value" name="city">
           <mat-option *ngFor="let city of cities" [value]="city.value">
             {{city.viewValue}}
           </mat-option>
@@ -18,7 +18,7 @@
     <div class="col-sm-6 text-center">
       <mat-form-field appearance="fill" style="width: 100%;">
         <mat-label>Resource</mat-label>
-        <mat-select [(ngModel)]="selectedResource" name="resource">
+        <mat-select [(ngModel)]="selectedResource.value" name="resource">
           <mat-option *ngFor="let resource of resources" [value]="resource.value">
             {{resource.viewValue}}
           </mat-option>
@@ -37,9 +37,11 @@
     <table mdbTable #tableEl="mdbTable" [hover]="true" style="z-index: 10;">
       <thead>
         <tr (click)="onScreenClick()">
-          <th *ngFor="let head of headElements; let i = index" [mdbTableSort]="elements" [sortBy]="headElements[i]"
-            scope="col" class="text-center">{{head | titlecase}}
-            <mdb-icon fas icon="sort"></mdb-icon>
+          <th *ngFor="let head of headElements; let i = index" [mdbTableSort]="elements" [sortBy]="headElements[i].value"
+            scope="col" class="text-center">{{head.viewValue | titlecase}}
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-up" viewBox="0 0 16 16">
+              <path d="M3.5 12.5a.5.5 0 0 1-1 0V3.707L1.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.498.498 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L3.5 3.707V12.5zm3.5-9a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
+            </svg>
           </th>
         </tr>
       </thead>

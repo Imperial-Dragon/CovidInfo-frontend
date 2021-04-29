@@ -19,20 +19,27 @@ export class HospitalInfoComponent implements OnInit, AfterViewInit {
   @ViewChild('row', { static: true }) row!: ElementRef;
 
   elements: HospitalData[] = [];
-  headElements = ['Hospital Name', 'Total Isolation Beds', 'Availaible Isolation Beds', 'Total Oxygen Beds', 
-  'Availaible Oxygen Beds', 'Total Ventilators', 'Availaible Ventilators', 'Last Verified', 'Report'];
+  headElements : {value : string, viewValue : string}[]= [ 
+    {value : 'name', viewValue : 'Hospital Name' }, 
+    {value : 'totalIsolationBeds', viewValue : 'Total Isolation Beds'}, 
+    {value : 'availaibleIsolationBeds', viewValue : 'Availaible Isolation Beds'}, 
+    {value : 'totalOxygenBeds', viewValue : 'Total Oxygen Beds'}, 
+    {value : 'availaibleOxygenBeds', viewValue : 'Availaible Oxygen Beds'}, 
+    {value : 'totalVentilatorBeds', viewValue : 'Total Ventilators'},
+    {value : 'availaibleVentilatorBeds', viewValue : 'Availaible Ventilators'},
+    {value : 'lastVerified.timestamp', viewValue : 'Last Verified'}, 
+    {value : 'reports', viewValue : 'Report'}
+  ];
 
   searchText: string = '';
   previous!: string;
 
-  selectedCity: string = '';
-  selectedResource: string = '';
+  selectedCity: City = {value: 'sangamner-0', viewValue: 'Sangamner'};
+  selectedResource: Resource = {value : 'bed-0', viewValue: 'Beds'};
   selectedHospitalId: string = '';
 
   cities: City[] = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'}
+    {value: 'sangamner-0', viewValue: 'Sangamner'}
   ];
 
   resources : Resource[] = [
@@ -45,7 +52,7 @@ export class HospitalInfoComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit() {
-    this.elements = this.fetchDataService.getHospitalInfoProxy(this.selectedCity, this.selectedResource);
+    this.elements = this.fetchDataService.getHospitalInfoProxy(this.selectedCity.value, this.selectedResource.value);
     this.mdbTable.setDataSource(this.elements);
     this.elements = this.mdbTable.getDataSource();
     this.previous = this.mdbTable.getDataSource();
@@ -53,43 +60,6 @@ export class HospitalInfoComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.cdRef.detectChanges();
-  }
-
-  addNewRow() {
-    this.mdbTable.addRow({
-      id: this.elements.length.toString(),
-      first: 'Wpis ' + this.elements.length,
-      last: 'Last ' + this.elements.length,
-      handle: 'Handle ' + this.elements.length
-    });
-    this.emitDataSourceChange();
-  }
-
-  addNewRowAfter() {
-    this.mdbTable.addRowAfter(1, {id: '2', first: 'Nowy', last: 'Row', handle: 'Kopytkowy'});
-    this.mdbTable.getDataSource().forEach((el: any, index: any) => {
-      el.id = (index + 1).toString();
-    });
-    this.emitDataSourceChange();
-  }
-
-  removeLastRow() {
-    this.mdbTable.removeLastRow();
-    this.emitDataSourceChange();
-    this.mdbTable.rowRemoved().subscribe((data: any) => {
-      console.log(data);
-    });
-  }
-
-  removeRow() {
-    this.mdbTable.removeRow(1);
-    this.mdbTable.getDataSource().forEach((el: any, index: any) => {
-      el.id = (index + 1).toString();
-    });
-    this.emitDataSourceChange();
-    this.mdbTable.rowRemoved().subscribe((data: any) => {
-      console.log(data);
-    });
   }
 
   emitDataSourceChange() {
