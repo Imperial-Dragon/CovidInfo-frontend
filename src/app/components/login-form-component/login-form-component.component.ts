@@ -8,6 +8,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class FormComponentComponent implements OnInit {
 
+  @Input('error') error!: string | null;
+
+  @Output('submit-login') submitEM = new EventEmitter();
+
   constructor() { }
 
   ngOnInit(): void {
@@ -23,8 +27,4 @@ export class FormComponentComponent implements OnInit {
       this.submitEM.emit(this.form.value);
     }
   }
-  @Input('error') error!: string | null;
-
-  @Output('submit') submitEM = new EventEmitter();
-
 }
