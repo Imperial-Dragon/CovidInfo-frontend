@@ -18,6 +18,7 @@ import { DataTableComponent } from './components/data-table/data-table.component
 import { HospitalInfoComponent } from './pages/hospital-info/hospital-info.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { FormComponentComponent } from './components/login-form-component/login-form-component.component';
+import { TopNavbarComponent } from './components/top-navbar/top-navbar.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { FormComponentComponent } from './components/login-form-component/login-
     DataTableComponent,
     HospitalInfoComponent,
     AdminComponent,
-    FormComponentComponent
+    FormComponentComponent,
+    TopNavbarComponent
   ],
   imports: [
     BrowserModule,
